@@ -1,0 +1,1 @@
+This is a demo project created to show that the data from the stackoverflow can be used to understand the trends in current tech industry. 

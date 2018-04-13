@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+    <script src="./cloud.js"></script>
+    <script src="./drawCloud.js"></script>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script>
+      $(document)
+        .on('ready', () => drawCloud.drawWordCloud());
+    </script>
+  </body>
+</html>
