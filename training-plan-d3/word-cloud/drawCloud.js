@@ -1,19 +1,38 @@
-var drawCloud = (function () {
+var drawCloud = (function (thisObj, stackoverflowLinks, jquery) {
     'use strict';
-    $.ajax({
-        url: 'https://api.stackexchange.com/2.2/tags?order=desc&sort=popular&site=stackoverflow&pagesize=100',
-        type: 'get'
-      }).done(function(res) {
-          var word_count = {};
-          res.items.map(item => word_count[item.name] = item.count);
-          console.log(Object.keys(word_count).length);
-          drawWordCloud(word_count);
-      });
+    const queryStringParams = (new URL(thisObj.location)).searchParams;
+    const now = new Date().toISOString().split('T')[0];
+    const params = {
+      page: queryStringParams.get("page") || 1,
+      pagesize: queryStringParams.get("pagesize") || 100,
+      fromdate: new Date(queryStringParams.get("fromdate") || now),
+      todate: new Date(queryStringParams.get("todate") || now),
+      order: queryStringParams.get("order") || 'desc',
+      min: queryStringParams.get("min") || 1,
+      max: queryStringParams.get("max") || 100,
+      sort: queryStringParams.get("sort") || 'popular',
+      inname: queryStringParams.get("inname") || '',
+      site: queryStringParams.get("site") || 'stackoverflow',
+    };
+
+    function init() {
+      console.log(params);
+      const url = stackOverflow.tags(params);
       
+      stackOverflow
+        .viaAuthentication(url, 
+          res => {
+            var word_count = {};
+            res.items.map(item => word_count[item.name] = item.count);
+            drawWordCloud(word_count);
+          }, 
+        () => console.log('error trying to connect'));
+    }
+
     function drawWordCloud(word_count){
       var svg_location = "#chart";
-      var width = $(document).width();
-      var height = $(document).height();
+      var width = jquery(document).width();
+      var height = jquery(document).height();
 
       var fill = d3.scale.category20();
 
@@ -58,7 +77,5 @@ var drawCloud = (function () {
       d3.layout.cloud().stop();
     }
 
-    return {
-        drawWordCloud: drawWordCloud
-    };
-} ());
+    init({});
+} (this, stackOverflow, $));

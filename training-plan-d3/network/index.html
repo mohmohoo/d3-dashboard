@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+</head>
+<body>
+    <div class="chart-wrapper" id="chart"></div>
+    <script>
+        (function (global, jquery) {
+            var data = 
+            [
+               {
+                    name: 'javascript',
+                    related: 
+                    [
+                        { name: 'react' },
+                        { name: 'redux' },
+                        { name: 'css' },
+                        { name: 'html' }
+                    ]  
+               },
+
+               {
+                    name: '.net',
+                    related: 
+                    [
+                        { name: 'entity framwork' },
+                        { name: 'web api' },
+                        { name: '.net core' },
+                        { name: 'iis' }
+                    ]  
+               }
+            ];
+        var width = jquery(global).width();
+        var height = jquery(global).height();
+        var radius = 10;
+        var ySpacing = 50;
+        var xSpacing = 150;
+
+        d3.select('#chart')
+            .append('svg')
+            .attr({
+                width: width,
+                height: height
+            });
+
+        var enter = d3.select('#chart')
+            .select('svg')
+            .selectAll('circle.main')
+            .data(data.map((d, i) => Object.assign({}, d, { totalLength: data.length, index: i })))
+            .enter();
+            
+        var mainCircle = enter
+            .append('circle')
+                .attr({
+                'cx': () => 0,
+                'cy': 0,
+                'r': radius * .1
+            });
+
+        mainCircle
+            .transition()
+            .delay((d, i) => i * 100)
+            .duration(5000)
+            .ease("elastic")
+            .attr({
+                'class': 'main',
+                'cx': (d, i) => width / 2,
+                'cy': (d, i) => (height / d.totalLength - ySpacing) / (i + 1),
+                'r': radius,
+                'fill': 'rgb(255, 0, 0)',
+                'stroke': 'black',
+                'stroke-width': 3
+            })
+
+        
+        var g = enter
+            .append('g')
+                .attr({
+                    'class': 'grouped',
+                    'transform': (d, i) => `translate(${width / 2 + xSpacing}, ${''})`
+                });
+
+        var circleEnter = g
+            .selectAll('circle.related')
+            .data(d => d.related.map(d1 => Object.assign({}, d1, { totalLength: d.related.length })))
+            .enter();
+
+        var relatedCircle = circleEnter
+            .append('circle')
+                .attr({
+                'cx': () => width / 2,
+                'cy': () => height / 2,
+                'r': radius,
+                'fill': 'rgb(255, 0, 0)',
+                'stroke': 'black',
+                'stroke-width': 3
+            });
+
+        relatedCircle
+            .transition()
+            .delay((d, i) => i * 100)
+            .duration(5000)
+            .ease("elastic")
+            .attr({
+                    'class': 'related',
+                    'cx': (d, i) => (width + xSpacing) / 2,
+                    'cy': (d, i) => (height / d.totalLength) * i + ySpacing,
+                    'r': radius,
+                    'fill': 'blue',
+                    'stroke': 'yellow',
+                    'stroke-width': 3
+                });
+
+        var lineEnter = g
+            .selectAll('line.related')
+            .data((d, i) => 
+                d.related.map(d1 => 
+                    Object.assign({}, d1, { totalLength: d.related.length })))
+            .enter();
+
+        
+        var lines = lineEnter
+            .append('line')
+                .attr({
+                    'class': 'related',
+                    'x1': width  / 2 + radius,
+                    'y1': (d, i) => (height / d.totalLength - ySpacing) / (i + 1),
+                    'x2': width  / 2 + radius,
+                    'y2': height / 2,
+                    'stroke': "rgb(0,255,255)",
+                    'stroke-width': 2
+                });
+        
+        lines
+            .transition()
+            .delay((d, i) => i * 100)
+            .duration(5000)
+            .ease("elastic")
+            .attr({
+                    'class': 'related',
+                    'x1': width  / 2 + radius,
+                    'y1': (d, i) => (height / d.parentTotalLength) * d.parentIndex + ySpacing,
+                    'x2': (d, i) => (width + xSpacing) / 2 - radius,
+                    'y2': (d, i) => (height / (d.totalLength * d.parentTotalLength)) * i + ySpacing,
+                    'stroke': "rgb(255,0,0)",
+                    'stroke-width': 2
+                })
+        } (this, $))
+    </script>
+</body>

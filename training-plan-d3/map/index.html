@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style>
+            .subunit.SCT { fill: #ddc; }
+            .subunit.WLS { fill: #cdd; }
+            .subunit.NIR { fill: #cdc; }
+            .subunit.ENG { fill: #dcd; }
+            .subunit.IRL { display: none; }
+
+            .subunit-boundary {
+                fill: none;
+                stroke: #777;
+                stroke-dasharray: 2,2;
+                stroke-linejoin: round;
+            }
+
+            .subunit-boundary.IRL {
+                stroke: #aaa;
+            }
+
+            .subunit-boundary {
+                fill: none;
+                stroke: #777;
+                stroke-dasharray: 2,2;
+                stroke-linejoin: round;
+            }
+
+            .subunit-boundary.IRL {
+                stroke: #aaa;
+            }
+
+            .subunit-label {
+                fill: #777;
+                fill-opacity: .5;
+                font-size: 20px;
+                font-weight: 300;
+                text-anchor: middle;
+            }
+        </style>
+        <script src="http://d3js.org/d3.v3.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+        <script>
+                var width = 960,
+                    height = 1160;
+
+                d3.json("uk.json", (error, uk) => {
+
+                    if (error) 
+                        return console.error(error);
+
+                    var svg = d3.select("body")
+                        .append("svg")
+                        .attr("width", width)
+                        .attr("height", height);
+
+                    var subunits = topojson
+                        .feature(uk, uk.objects.subunits);
+    
+                    var projection = d3.geo.albers()
+                        .center([0, 55.4])
+                        .rotate([4.4, 0])
+                        .parallels([50, 60])
+                        .scale(6000)
+                        .translate([width / 2, height / 2]);
+                    
+                    var path = d3.geo.path()
+                        .projection(projection);
+    
+                    svg.selectAll(".subunit")
+                        .data(topojson.feature(uk, uk.objects.subunits).features)
+                    .enter().append("path")
+                        .attr("class", d => "subunit " + d.id)
+                        .attr("d", path);
+
+                    svg.append("path")
+                        .datum(topojson.mesh(uk, uk.objects.subunits, (a, b) => a !== b && a.id !== "IRL"))
+                        .attr("d", path)
+                        .attr("class", "subunit-boundary");
+
+                    svg.append("path")
+                        .datum(topojson.mesh(uk, uk.objects.subunits, (a, b) => a === b && a.id === "IRL"))
+                        .attr("d", path)
+                        .attr("class", "subunit-boundary IRL");
+
+                    svg.selectAll(".place-label")
+                        .data(() => topojson.feature(uk, uk.objects.places).features)
+                    .enter().append("text")
+                        .attr("class", "place-label")
+                        .attr("transform", d => "translate(" + projection(d.geometry.coordinates) + ")")
+                        .attr("dy", ".35em")
+                        .text(d => d.properties.name);
+
+
+                    svg.selectAll(".place-label")
+                        .attr("x", d => d.geometry.coordinates[0] > -1 ? 6 : -6)
+                        .style("text-anchor", d => d.geometry.coordinates[0] > -1 ? "start" : "end");
+
+                    svg.selectAll(".subunit-label")
+                        .data(topojson.feature(uk, uk.objects.subunits).features)
+                    .enter().append("text")
+                        .attr("class", d => "subunit-label " + d.id)
+                        .attr("transform", d => "translate(" + path.centroid(d) + ")")
+                        .attr("dy", ".35em")
+                        .text(d => d.properties.name);
+                });
+            </script>
+    </head>
+    <body>
+    </body>
+    <footer>
+    </footer>
+</html>
