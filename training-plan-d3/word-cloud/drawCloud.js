@@ -1,7 +1,6 @@
 var drawCloud = (function (thisObj, stackoverflowLinks, jquery) {
     'use strict';
     const queryStringParams = (new URL(thisObj.location)).searchParams;
-    const now = new Date().toISOString().split('T')[0];
     const params = {
       page: queryStringParams.get("page") || 1,
       pagesize: queryStringParams.get("pagesize") || 100,
@@ -20,7 +19,7 @@ var drawCloud = (function (thisObj, stackoverflowLinks, jquery) {
       const url = stackOverflow.tags(params);
       
       stackOverflow
-        .viaAuthentication(url, 
+        .viaAuthenticationByUrl(url, 
           res => {
             var word_count = {};
             res.items.map(item => word_count[item.name] = item.count);
