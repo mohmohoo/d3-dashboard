@@ -1,6 +1,6 @@
 var stackOverflow = (function (jquery) {
     const commonUrl = 'https://api.stackexchange.com/2.2/';
-    const channelUrl = 'http://localhost';
+    const channelUrl = 'http://172.17.186.83';
     let initialised = false;
     const key = 'htVlePLe1gyb*8bBdut9nQ(('; 
 
@@ -8,7 +8,7 @@ var stackOverflow = (function (jquery) {
     {
         if (date)
         {
-            return `${name}=${new Date(date).toISOString().substring(0, 10)}&`;
+            return `${name}=${Math.floor((new Date(date)).getTime()/1000)}&`;
         }
 
         return '';
@@ -19,7 +19,7 @@ var stackOverflow = (function (jquery) {
         const fromDateStr = getDateParam('fromdate', fromdate);
         const toDateStr = getDateParam('toDate', todate);
 
-        return `${commonUrl}tags?${fromDateStr}${toDateStr}order=${order}&sort=${sort}&site=${site}&pagesize=${pagesize}&fromdate=${fromdate}`;
+        return `${commonUrl}tags?${fromDateStr}${toDateStr}order=${order}&sort=${sort}&site=${site}&pagesize=${pagesize}`;
     }
 
     function viaAuthentication(url, onSuccess, onfail)

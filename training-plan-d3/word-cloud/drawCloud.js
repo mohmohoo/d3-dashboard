@@ -5,8 +5,8 @@ var drawCloud = (function (thisObj, stackoverflowLinks, jquery) {
     const params = {
       page: queryStringParams.get("page") || 1,
       pagesize: queryStringParams.get("pagesize") || 100,
-      fromdate: new Date(queryStringParams.get("fromdate") || now),
-      todate: new Date(queryStringParams.get("todate") || now),
+      fromdate: queryStringParams.get("fromdate"),
+      todate: queryStringParams.get("todate"),
       order: queryStringParams.get("order") || 'desc',
       min: queryStringParams.get("min") || 1,
       max: queryStringParams.get("max") || 100,
@@ -26,7 +26,7 @@ var drawCloud = (function (thisObj, stackoverflowLinks, jquery) {
             res.items.map(item => word_count[item.name] = item.count);
             drawWordCloud(word_count);
           }, 
-        () => console.log('error trying to connect'));
+        (error) => console.log(error));
     }
 
     function drawWordCloud(word_count){
