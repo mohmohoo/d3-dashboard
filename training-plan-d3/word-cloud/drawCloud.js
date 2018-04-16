@@ -39,18 +39,15 @@ var drawCloud = (function (thisObj, stackoverflowLinks, jquery) {
       var word_entries = d3.entries(word_count);
 
       var xScale = d3.scale.linear()
-         .domain([0, d3.max(word_entries, function(d) {
-            return d.value;
-          })
-         ])
+         .domain([0, d3.max(word_entries, d => d.value)])
          .range([10,100]);
 
       d3.layout.cloud().size([width, height])
         .timeInterval(20)
         .words(word_entries)
-        .fontSize(function(d) { return xScale(+d.value); })
-        .text(function(d) { return d.key; })
-        .rotate(function() { return ~~(Math.random() * 2) * 90; })
+        .fontSize(d => xScale(+d.value))
+        .text(d => d.key)
+        .rotate(() => ~~(Math.random() * 2) * 90)
         .font("Impact")
         .on("end", draw)
         .start();
@@ -64,14 +61,12 @@ var drawCloud = (function (thisObj, stackoverflowLinks, jquery) {
           .selectAll("text")
             .data(words)
           .enter().append("text")
-            .style("font-size", function(d) { return xScale(d.value) + "px"; })
+            .style("font-size", d => xScale(d.value) + "px")
             .style("font-family", "Impact")
-            .style("fill", function(d, i) { return fill(i); })
+            .style("fill", (d, i) => fill(i))
             .attr("text-anchor", "middle")
-            .attr("transform", function(d) {
-              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-            })
-            .text(function(d) { return d.key; });
+            .attr("transform", d => "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")")
+            .text(d => d.key);
       }
 
       d3.layout.cloud().stop();

@@ -6,12 +6,9 @@ var stackOverflow = (function (jquery) {
 
     function getDateParam(name, date)
     {
-        if (date)
-        {
-            return `${name}=${Math.floor((new Date(date)).getTime()/1000)}&`;
-        }
-
-        return '';
+        return date 
+            ? `${name}=${Math.floor((new Date(date)).getTime()/1000)}&`
+            : '';
     }
 
     function tags({ page, pagesize, fromdate, todate, order, min, max, sort, inname, site })
@@ -42,7 +39,6 @@ var stackOverflow = (function (jquery) {
             success: data => 
                 {
                     const authenticateUrl = `${url}&accessToken=${data.accessToken}&key=${key}`;
-                    console.log(authenticateUrl);
                     jquery
                         .ajax({
                             url: authenticateUrl,
