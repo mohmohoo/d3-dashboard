@@ -1,0 +1,27 @@
+{
+  "name": "training-plan-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.1.0",
+    "express": "^4.16.3",
+    "gulp": "^3.9.1",
+    "gulp-mocha": "^5.0.0",
+    "gulp-nodemon": "^2.2.1",
+    "pug": "^2.0.3",
+    "querystring": "^0.2.0",
+    "request": "^2.85.0",
+    "require-from-url": "^3.1.2",
+    "supertest": "^3.0.0",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "gulp-env": "^0.4.0"
+  }
+}
