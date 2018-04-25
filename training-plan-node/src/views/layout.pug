@@ -1,0 +1,38 @@
+html 
+    head
+        meta(charset="utf-8")
+        meta(http-equiv="X-UA-Compatible" content="IE=edge")
+        meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+        title Demo
+        link(href="/css/bootstrap.min.css" rel="stylesheet" type="text/css")
+        link(href="/css/dashboard.css" rel="stylesheet" type="text/css")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js")
+        script(src="/js/bootstrap.min.js")
+    body 
+        nav(class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow")
+            div(class="navbar-brand col-sm-3 col-md-2 mr-0") Stackoverflow Tech Data
+            ul(class="navbar-nav px-3")
+                li(class="nav-item text-nowrap")
+                    a(class="nav-link") Sign in
+        div(class="container-fluid")
+            div(class="row")
+                nav(class="col-md-2 d-none d-md-block bg-light sidebar")
+                    div(class="sidebar-sticky")
+                        ul(class="nav flex-column")
+                            li(class="nav-item")
+                                a(class="nav-link active" href="#") 
+                                    svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="-1 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather") 
+                                        path(d="M12 3c-4.006 0-7.267 3.141-7.479 7.092-2.57.463-4.521 2.706-4.521 5.408 0 3.037 2.463 5.5 5.5 5.5h13c3.037 0 5.5-2.463 5.5-5.5 0-2.702-1.951-4.945-4.521-5.408-.212-3.951-3.473-7.092-7.479-7.092z")
+                                            span(class="sr-only") Current
+                                    | Word Cloud
+                main(role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4")
+                    div(class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom")
+                        h2 Word Cloud
+                        div(class="btn-toolbar mb-2 mb-md-0")
+                            div(class="btn-group mr-2")
+                                button(class="btn btn-sm btn-outline-secondary") Share
+                                button(class="btn btn-sm btn-outline-secondary") Export
+                    div(id="vis-area")
+                        block content
+        
+                
